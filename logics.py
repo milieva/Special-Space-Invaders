@@ -87,17 +87,20 @@ class Game:
 	def spawn_big_monster(self):
 		if self.level != 4 and self.timer == 0:
 			monster_health = len(self.monsters)
-			big_monster = BigMonster(monster_health, (0, 0))
+			big_monster = BigMonster(monster_health, (250, 250))
 			self.monsters = [big_monster]
 		elif self.level == 4:
 			monster_health = 10
-			big_monster1 = BigMonster(monster_health, (50, 0))
-			big_monster2 = BigMonster(monster_health, (500, 0))
-			big_monster3 = BigMonster(monster_health, (250, 250))
+			big_monster1 = BigMonster(monster_health, (150, 50))
+			big_monster2 = BigMonster(monster_health, (450, 50))
+			big_monster3 = BigMonster(monster_health, (250, 200))
 			self.monsters = [big_monster1, big_monster2, big_monster3]
 
 	def spawn_player(self, name):
 		player = Player(name, (0, 0))
+
+	def decrease_timer(self):
+		self.timer -=1
 
 	def start(self):
 		self.spawn_player(name)
