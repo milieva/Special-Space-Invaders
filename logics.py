@@ -96,7 +96,6 @@ class Game:
 			big_monster3 = BigMonster(monster_health, (250, 250))
 			self.monsters = [big_monster1, big_monster2, big_monster3]
 
-
 	def spawn_player(self, name):
 		player = Player(name, (0, 0))
 
@@ -111,4 +110,3 @@ class Game:
 	def end(self):
 		if self.level == 5 or self.player.is_dead():
 			return True 
-

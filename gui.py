@@ -16,7 +16,7 @@ BULLET_HEIGHT = 32
 BULLET_WIDTH = 32
 
 surface = pygame.display.set_mode((HEIGHT, WIDTH))
-surface.fill((255, 255, 255))
+#surface.fill((255, 255, 255))
 MOVE_SIDE = 1000
 MOVE_BULLET = 1000
 clock = pygame.time.Clock()
@@ -50,7 +50,8 @@ def move_monsters_left(monsters):
 		y = monster.coordinates[1]
 		pygame.draw.rect(surface, [255,255,255], (x, y, MONSTER_WIDTH,MONSTER_HEIGHT))
 		monster.move((x - 50, y))
-		surface.blit(monster_sprite, monster.coordinates)
+		if not(monster.is_dead()):
+			surface.blit(monster_sprite, monster.coordinates)
 
 def move_monsters_right(monsters):
 	for monster in monsters:
@@ -58,7 +59,8 @@ def move_monsters_right(monsters):
 		y = monster.coordinates[1]
 		pygame.draw.rect(surface, [255,255,255], (x, y, MONSTER_WIDTH,MONSTER_HEIGHT))
 		monster.move((x + 50, y))
-		surface.blit(monster_sprite, monster.coordinates)
+		if not(monster.is_dead()):
+			surface.blit(monster_sprite, monster.coordinates)
 
 def move_player_left(player):
 	x = player.coordinates[0]
@@ -80,16 +82,24 @@ def move_player_bullet(bullets):
 	for bullet in bullets:
 		x = bullet.coordinates[0]
 		y = bullet.coordinates[1]
-		#if x - 20 > 0:
 		pygame.draw.rect(surface, [255,255,255], (x, y, BULLET_WIDTH, BULLET_HEIGHT))
 		bullet.move()
-		surface.blit(bullet_sprite, bullet.coordinates)
+		if not(bullet.is_dead()):
+			surface.blit(bullet_sprite, bullet.coordinates)
+
+def collide(bullet, monster):
+	if bullet.coordinates[1] == monster.coordinates[1] and bullet.coordinates[0] == monster.coordinates[0]:
+		return True
 
 def player_shoot(player):
 	x = new_player.coordinates[0]
 	y = new_player.coordinates[1]
 	player.shoot()
 	for bullet in player.bullets:
+		for monster in new_game.monsters:
+			if collide(bullet, monster):
+				bullet.take_a_hit()
+				monster.take_a_hit()
 		surface.blit(bullet_sprite, bullet.coordinates)
 	move_player_bullet(player.bullets)
 
