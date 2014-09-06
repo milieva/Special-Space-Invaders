@@ -34,7 +34,7 @@ class Bullet(Unit):
 			self.speed = NORMAL_SPEED
 
 	def move(self):
-		self.coordinates[1] += self.direction
+		self.coordinates = (self.coordinates[0], self.coordinates[1] + self.direction) 
 
 class Player(Unit):
 	def __init__(self, name, coordinates):
@@ -47,7 +47,7 @@ class Player(Unit):
 		self.score += 1
 
 	def shoot(self):
-		bullet = Bullet(1, 1, self.coordinates)
+		bullet = Bullet(-50, 1, (self.coordinates[0], self.coordinates[1] - 30))
 		self.bullets.append(bullet)
 		self.bullets = list(filter(lambda x: not(x.is_dead()), self.bullets))
 
@@ -57,7 +57,7 @@ class Monster(Unit):
 		self.bullets = []
 
 	def shoot(self):
-		bullet = Bullet(-1, 1, self.coordinates)
+		bullet = Bullet(50, 1, self.coordinates)
 		self.bullets.append(bullet)
 		self.bullets = list(filter(lambda x: not(x.is_dead()), self.bullets))
 
@@ -85,10 +85,17 @@ class Game:
 			self.monsters.append(monster)
 
 	def spawn_big_monster(self):
-		if self.timer == 0:
+		if self.level != 4 and self.timer == 0:
 			monster_health = len(self.monsters)
 			big_monster = BigMonster(monster_health, (0, 0))
 			self.monsters = [big_monster]
+		elif self.level == 4:
+			monster_health = 10
+			big_monster1 = BigMonster(monster_health, (50, 0))
+			big_monster2 = BigMonster(monster_health, (500, 0))
+			big_monster3 = BigMonster(monster_health, (250, 250))
+			self.monsters = [big_monster1, big_monster2, big_monster3]
+
 
 	def spawn_player(self, name):
 		player = Player(name, (0, 0))
