@@ -1,6 +1,6 @@
 import pygame
 import time
-from logics1 import *
+from logics import *
 import os
 
 pygame.init()
